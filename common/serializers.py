@@ -6,25 +6,25 @@ class PositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Position
-        fields = ['title',]
+        fields = ['title']
 
 
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
-        fields = ['title',]
+        fields = ['title']
 
 
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
-        fields = ['title',]
+        fields = ['title']
 
 
 class RegionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Region
-        fields = ['title',]
+        fields = ['title']
 
 
 class NeighborhoodSerializer(serializers.ModelSerializer):
