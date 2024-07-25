@@ -2,28 +2,50 @@ from rest_framework import serializers
 from .models import Position, Country, City, Region, Neighborhood, Employee, Test, Question, Answer
 
 
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ['id', 'title', 'text_content', 'image_content', 'content_type']
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        if instance.content_type == 'text':
+            ret.pop('image_content', None)
+        elif instance.content_type == 'image':
+            ret.pop('text_content', None)
+        return ret
+
+
 class TextQuestionSerializer(serializers.ModelSerializer):
+    answers = AnswerSerializer(many=True)
+
     class Meta:
         model = Question
-        fields = ['title', 'text_content']
+        fields = ['title', 'text_content', 'answers']
 
 
 class ImageQuestionSerializer(serializers.ModelSerializer):
+    answers = AnswerSerializer(many=True)
+
     class Meta:
         model = Question
-        fields = ['title', 'image_content']
+        fields = ['title', 'image_content', 'answers']
 
 
 class VideoQuestionSerializer(serializers.ModelSerializer):
+    answers = AnswerSerializer(many=True)
+
     class Meta:
         model = Question
-        fields = ['title', 'video_content']
+        fields = ['title', 'video_content', 'answers']
 
 
 class DynamicQuestionSerializer(serializers.ModelSerializer):
+    answers = AnswerSerializer(many=True)
+
     class Meta:
         model = Question
-        fields = ['title']
+        fields = ['title', 'answers']
 
     def to_representation(self, instance):
         if instance.content_type == 'text':
@@ -37,25 +59,23 @@ class DynamicQuestionSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    answers = AnswerSerializer(many=True)
+
     class Meta:
         model = Question
-        fields = ['title']
+        fields = ['title', 'answers']
 
 
 class TextAnswerSerializer(serializers.ModelSerializer):
-    question = QuestionSerializer()
-
     class Meta:
         model = Answer
-        fields = ['title', 'question', 'text_content']
+        fields = ['title', 'text_content']
 
 
 class ImageAnswerSerializer(serializers.ModelSerializer):
-    question = QuestionSerializer()
-
     class Meta:
         model = Answer
-        fields = ['title', 'question', 'image_content']
+        fields = ['title', 'image_content']
 
 
 class DynamicAnswerSerializer(serializers.ModelSerializer):
@@ -73,7 +93,6 @@ class DynamicAnswerSerializer(serializers.ModelSerializer):
 
 
 class PositionSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Position
         fields = ['title']
@@ -123,12 +142,14 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
 
 class TestSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializer(many=True)
+    employee = EmployeeSerializer()
+
     class Meta:
         model = Test
         fields = ('id',
                   'title',
-                  'question',
-                  'answer',
+                  'questions',
                   'employee',
                   'balls'
                   )

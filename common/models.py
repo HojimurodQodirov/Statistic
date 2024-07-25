@@ -56,17 +56,6 @@ class Employee(models.Model):
         return self.full_name
 
 
-class Test(models.Model):
-    title = models.CharField(max_length=255)
-    question = models.TextField()
-    answer = models.TextField()
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    balls = models.IntegerField()
-
-    def __str__(self):
-        return self.title
-
-
 class Question(models.Model):
     CONTENT_TYPE_CHOICES = [
         ('text', 'Text'),
@@ -78,6 +67,7 @@ class Question(models.Model):
     text_content = models.TextField(null=True, blank=True)
     image_content = models.URLField(null=True, blank=True)
     video_content = models.URLField(null=True, blank=True)
+    answers = models.ManyToManyField("Answer", related_name='questions')
     balls = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
@@ -90,10 +80,19 @@ class Answer(models.Model):
         ('image', 'Image'),
     ]
     title = models.CharField(max_length=255)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     content_type = models.CharField(max_length=10, choices=CONTENT_TYPE_CHOICES)
     text_content = models.TextField(null=True, blank=True)
     image_content = models.URLField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Test(models.Model):
+    title = models.CharField(max_length=255)
+    questions = models.ManyToManyField(Question, related_name='tests')
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    balls = models.IntegerField()
 
     def __str__(self):
         return self.title
