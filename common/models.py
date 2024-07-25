@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Sum
 
 
 class Position(models.Model):
@@ -68,3 +67,33 @@ class Test(models.Model):
         return self.title
 
 
+class Question(models.Model):
+    CONTENT_TYPE_CHOICES = [
+        ('text', 'Text'),
+        ('image', 'Image'),
+        ('video', 'Video'),
+    ]
+    title = models.CharField(max_length=255)
+    content_type = models.CharField(max_length=10, choices=CONTENT_TYPE_CHOICES)
+    text_content = models.TextField(null=True, blank=True)
+    image_content = models.URLField(null=True, blank=True)
+    video_content = models.URLField(null=True, blank=True)
+    balls = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Answer(models.Model):
+    CONTENT_TYPE_CHOICES = [
+        ('text', 'Text'),
+        ('image', 'Image'),
+    ]
+    title = models.CharField(max_length=255)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
+    content_type = models.CharField(max_length=10, choices=CONTENT_TYPE_CHOICES)
+    text_content = models.TextField(null=True, blank=True)
+    image_content = models.URLField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title

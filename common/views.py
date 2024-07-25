@@ -2,11 +2,9 @@ from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.views import APIView
-
-from .models import Position, Country, City, Region, Neighborhood, Employee, Test
+from .models import Position, Country, City, Region, Neighborhood, Employee, Test, Question, Answer
 from .serializers import PositionSerializer, CountrySerializer, CitySerializer, RegionSerializer, \
-    NeighborhoodSerializer, EmployeeSerializer, TestSerializer, TotalBallsSerializer
+    NeighborhoodSerializer, EmployeeSerializer, TestSerializer, DynamicQuestionSerializer, DynamicAnswerSerializer
 from .filters import EmployeeFilter
 
 
@@ -42,7 +40,7 @@ class EmployeeList(generics.ListCreateAPIView):
     filterset_class = EmployeeFilter
 
 
-class EmployeeListProcent(generics.ListCreateAPIView):
+class EmployeeListPercent(generics.ListCreateAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     filter_backends = [DjangoFilterBackend]
@@ -64,7 +62,7 @@ class EmployeeListProcent(generics.ListCreateAPIView):
             rounded_percent = 0.0
 
         response_data = {
-            'procent': rounded_percent
+            'percent': rounded_percent
         }
 
         return Response(response_data)
@@ -75,5 +73,11 @@ class TestList(generics.ListAPIView):
     serializer_class = TestSerializer
 
 
+class QuestionList(generics.ListAPIView):
+    queryset = Question.objects.all()
+    serializer_class = DynamicQuestionSerializer
 
 
+class AnswerList(generics.ListAPIView):
+    queryset = Answer.objects.all()
+    serializer_class = DynamicAnswerSerializer

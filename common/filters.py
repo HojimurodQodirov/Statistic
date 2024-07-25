@@ -7,8 +7,24 @@ class EmployeeFilter(django_filters.FilterSet):
     city = django_filters.CharFilter(field_name='city__title', lookup_expr="iexact")
     region = django_filters.CharFilter(field_name='region__title', lookup_expr='iexact')
     neighborhood = django_filters.CharFilter(field_name='neighborhood__title', lookup_expr='iexact')
-
+    position = django_filters.CharFilter(field_name='position__title', lookup_expr='iexact')
 
     class Meta:
         model = Employee
-        fields = ['country', 'city', 'region', 'neighborhood']
+        fields = ['country', 'city', 'region', 'neighborhood', 'position']
+
+
+"""
+                          _                   _
+                        _  _                _  _
+                       _    _              _    _
+                      _      _            _      _
+                     _        _          _        _
+                    _           _________          _
+                   |                                |
+                   |  ________            ________  |
+                   |                                |
+                   |             ______             |
+                   |________________________________|
+
+"""

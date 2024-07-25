@@ -3,8 +3,14 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 from .models import Position, Country, City, Region, Neighborhood, Employee, Test
+<<<<<<< Updated upstream
 from .serializers import EmployeeSerializer, TestSerializer
 
+=======
+from .serializers import EmployeeSerializer
+
+
+>>>>>>> Stashed changes
 class PositionModelTest(TestCase):
     def setUp(self):
         self.position = Position.objects.create(title='Manager', slug='manager')
