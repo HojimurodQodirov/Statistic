@@ -3,8 +3,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.response import Response
 from .models import Position, Country, City, Region, Neighborhood, Employee, Test, Question, Answer
-from .serializers import PositionSerializer, CountrySerializer, CitySerializer, RegionSerializer, \
-    NeighborhoodSerializer, EmployeeSerializer, TestSerializer, DynamicQuestionSerializer, DynamicAnswerSerializer
+from .serializers import (
+    PositionSerializer, CountrySerializer, CitySerializer, RegionSerializer,
+    NeighborhoodSerializer, EmployeeSerializer, TestSerializer, DynamicQuestionSerializer, AnswerSerializer
+)
 from .filters import EmployeeFilter
 
 
@@ -80,4 +82,4 @@ class QuestionList(generics.ListAPIView):
 
 class AnswerList(generics.ListAPIView):
     queryset = Answer.objects.all()
-    serializer_class = DynamicAnswerSerializer
+    serializer_class = AnswerSerializer
